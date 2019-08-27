@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyparser = require('body-parser');
 var mongoose =require('mongoose');
+var multer = require("multer");
+var upload = multer({dest:'./uploads'}).single('myfile');
 
 var product = require("./model/product");
 
@@ -60,6 +62,14 @@ app.post("/adddata",(req,res)=>{
         if(err) throw err;
         else{
             res.send({serverdata:"added"});
+        }
+    })
+});
+app.get("/editdata",(req,res)=>{
+    product.findOne({productid:req.body.id},(err,result)=>{
+        if(err) throw err;
+        else{
+            res.send(result);
         }
     })
 })
