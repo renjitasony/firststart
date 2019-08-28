@@ -65,11 +65,31 @@ app.post("/adddata",(req,res)=>{
         }
     })
 });
-app.get("/editdata",(req,res)=>{
-    product.findOne({productid:req.body.id},(err,result)=>{
+app.get("/editdata/:id",(req,res)=>{
+    product.findOne({productid:req.params.id},(err,result)=>{
         if(err) throw err;
         else{
             res.send(result);
+        }
+    })
+});
+app.post("/update",(req,res)=>{    
+    product.updateOne({productid:req.body.pid},
+        {$set:{productname:req.body.pname,productprice:req.body.pprice}},
+        (err)=>{
+        if(err) throw err;
+        else{
+            console.log("updated");
+            res.send({msg:"Updated"});
+        }
+    });    
+});
+app.get("/delete/:id",(req,res)=>{
+    product.deleteOne({productid:req.params.id},(err)=>{
+        if(err) throw err;
+        else{
+            console.log("deleted");
+            res.send({msg:"deleted"});
         }
     })
 })
